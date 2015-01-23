@@ -30,7 +30,7 @@
             <span class="date">10 January 2014</span>
             <h2 class="title">Python Celery</h2>
         </div>
-        <p>Sunucu tarafında geliştirme yaparken bazı durumlarda asenkron çalışan process'lere ihtiyaç duyarız. Bu asenkron 
+        <p>Sunucu(backend) tarafında geliştirme yaparken bazı durumlarda asenkron çalışan process'lere ihtiyaç duyarız. Bu asenkron 
 process'leri istemciye anlık cevap verilmesi gerekmeyen veya peryodik olarak çalışması gereken işlemleri yapmak için kullanırız.</p>
 <p>Örneğin kullanıcıların sisteme yüklediği resimleri çeşitli boyutlarda işleyip, kayıt altına almamız gerektiğini varsayalım. 
 Böylesine kullanıcıya anlık cevap gerektirmeyen bir işlemi, senkron bir şekilde geliştirirsek hem işlem uzun 
@@ -170,7 +170,7 @@ register olan task'ların listesini görebilirsiniz.    </p>
 "thumbnail_generater(image_path, image_name)" şeklinde çağırmadık. Task fonksiyonumuzun başına "@task" 
 decorator'u eklediğimiz için fonksiyona "delay" isminde yeni bir attribute/komut eklendi. Delay üzerinden celery broker'a 
 işlemin background task olarak çalışmasını istiyor. Eğer normal olarak çağırırsanız işlem normal python process olarak çalışır.</p>
-<p>Umarım konuyu iyi anlatabilmişimdir. İncelemek isterseniz yazdığım örnek uygulamanın koduna <a href="http://www.github.com/erdemozkol/" target="_blank">github</a>
+<p>Umarım konuyu iyi anlatabilmişimdir. İncelemek isterseniz yazdığım örnek uygulamanın koduna <a href="https://github.com/erdemozkol/celery_example/" target="_blank">github</a>
 sayfam üzerinden ulaşabilirsiniz. Bir sonraki blog yazımda görüşmek üzere.</p>
     </article>
     </div>
@@ -178,11 +178,11 @@ sayfam üzerinden ulaşabilirsiniz. Bir sonraki blog yazımda görüşmek üzere
 <footer>
 
     <div class="content">
-        <p>Merhaba, ben Erdem. <a href="http://hipolabs.com/" target="_blank" class="hipo">Hipo</a>'da çalışıyorum.
-            Web & Mobile development ile uğraşıyorum. Benimle <a href="mailto:erdemozkol@gmail.com" class="email">email</a> ile iletişime geçebilir,
-            <a href="https://github.com/erdemozkol/" target="_blank" class="github">github</a>'ımı inceleyebilir, ya da
+        <p>Merhaba ben Erdem, genelde web ağırlıklı olmak üzere yazılım geliştirme ile uğraşıyorum.
+             Benimle <a href="mailto:erdemozkol@gmail.com" class="email">email</a> ile iletişime geçebilir,
+            <a href="https://github.com/erdemozkol/" target="_blank" class="github">github</a> üzerinden projelerimi inceleyebilir, ya da
             <a href="https://twitter.com/erdemozkol/" target="_blank" class="twitter">twitter</a> üzerinden takip edebilirsiniz.</p>
-        <img src="/theme/images/profile_picture.jpeg" />
+        <img src="/theme/images/profile_picture.jpg" />
     </div>
 
 </footer>
