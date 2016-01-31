@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Observer Pattern</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/theme/images/fırat_ugur_gursoy.png">
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Slab' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/theme/css/main.css" />
+<link rel="stylesheet" href="/theme/css/prettify.css" />
+</head>
+
+<body class="body ">
+<header>
+    <div class="content">
+        <a href="/" class="title"> Erdem Özkol </a>
+        <nav>
+            <a href="/">blog</a>
+            <a href="/me">me</a>
+            <a href="https://github.com/erdemozkol">github</a>
+            <a href="mailto:erdemozkol@gmail.com">contact</a>
+        </nav>
+    </div>
+</header>
+<main>
+    <div class="content">
+    <article class="post">
+        <div class="post-info">
+            <span class="date">11 January 2016</span>
+            <h2 class="title">Observer Pattern</h2>
+        </div>
+        <p>Observer is often used for the specific case of changes based on other object’s change of state. It is also the basis of event management. Even more important is the ability to separate functionality in different modules. Anytime you want to decouple the source of the call from the called code in a completely dynamic way.</p>
+<p><strong>Wikipedia:</strong>
+<em>The observer pattern is a software design pattern in which an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods.</em></p>
+<h3>Example:</h3>
+<p>Just think we are developing a  game. There is an observer in the game, and this observer communicates with the units if it saw an enemy. It calls a method of Unit classes which previously registered to itself. Let's see it on example.</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">Unit:</span>
+    <span class="n">def</span> <span class="n">__init__</span>(<span class="k">self</span>, <span class="nb">name</span>):
+        <span class="k">self</span>.<span class="nb">name</span> = <span class="nb">name</span>
+
+    <span class="n">def</span> <span class="n">update</span>(<span class="k">self</span>, *<span class="n">args</span>, **<span class="n">kwargs</span>):
+        <span class="nb">print</span> <span class="s">&quot;%s closing to enemies!&quot;</span> % <span class="k">self</span>.<span class="nb">name</span>
+
+
+<span class="k">class</span> <span class="n">Observer:</span>
+    <span class="n">units</span> = <span class="n">set</span>()
+
+    <span class="n">def</span> <span class="n">register</span>(<span class="k">self</span>, <span class="n">unit</span>):
+        <span class="k">self</span>.<span class="n">units</span>.<span class="n">add</span>(<span class="n">unit</span>)
+
+    <span class="n">def</span> <span class="n">unregister</span>(<span class="k">self</span>, <span class="n">unit</span>):
+        <span class="k">self</span>.<span class="n">units</span>.<span class="n">discard</span>(<span class="n">unit</span>)
+
+    <span class="n">def</span> <span class="n">saw_somehing</span>(<span class="k">self</span>, *<span class="n">args</span>, **<span class="n">kwargs</span>):
+        <span class="k">for</span> <span class="n">unit</span> <span class="n">in</span> <span class="k">self</span>.<span class="n">units:</span>
+            <span class="n">unit</span>.<span class="n">update</span>(*<span class="n">args</span>, **<span class="n">kwargs</span>)
+
+
+<span class="n">blue_team</span> = <span class="n">Unit</span>(<span class="nb">name</span>=<span class="s">&quot;Blue Team&quot;</span>)
+<span class="n">red_team</span> = <span class="n">Unit</span>(<span class="nb">name</span>=<span class="s">&quot;Red Team&quot;</span>)
+
+<span class="n">observer</span> = <span class="n">Observer</span>()
+
+<span class="n">observer</span>.<span class="n">register</span>(<span class="n">blue_team</span>)
+<span class="n">observer</span>.<span class="n">register</span>(<span class="n">red_team</span>)
+
+<span class="n">observer</span>.<span class="n">saw_somehing</span>()
+&gt;&gt;&gt; <span class="s">&quot;Blue Team closing to enemies!&quot;</span>
+&gt;&gt;&gt; <span class="s">&quot;Red Team closing to enemies!&quot;</span>
+
+<span class="n">observer</span>.<span class="n">unregister</span>(<span class="n">blue_team</span>)
+
+<span class="n">observer</span>.<span class="n">saw_somehing</span>()
+&gt;&gt;&gt; <span class="s">&quot;Red Team closing to enemies!&quot;</span>
+</pre></div>
+
+
+<p><sup><strong><em>References:</em></strong><sup></p>
+<ul>
+<li><sup><a href="http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Observer.html">http://python-3-patterns-idioms-test.readthedocs.org/en/latest/Observer.html</a><sup></li>
+<li>
+<p><sup><a href="http://tradingwithpython.blogspot.com.tr/2011/12/howto-observer-pattern.html">http://tradingwithpython.blogspot.com.tr/2011/12/howto-observer-pattern.html</a><sup></p>
+</li>
+<li>
+<p><sup><a href="https://en.wikipedia.org/wiki/Observer_pattern">https://en.wikipedia.org/wiki/Observer_pattern</a><sup></p>
+</li>
+</ul>
+    </article>
+    </div>
+</main>
+<footer>
+
+    <div class="content">
+        <ul>
+            <li><strong>email</strong> <a href="mailto:erdemozkol@gmail.com">erdemozkol@gmail.com</a></li>
+            <li><strong>github</strong> <a href="http://github.com/erdemozkol">github.com/erdemozkol</a></li>
+            <li><strong>twitter</strong> <a href="http://twitter.com/erdemozkol">twitter.com/erdemozkol</a></li>
+            <li><strong>linkedin</strong> <a href="https://www.linkedin.com/in/erdemozkol/">linkedin.com/erdemozkol</a></li>
+        </ul>
+    </div>
+
+</footer>
+    <script type="text/javascript" src="/theme/js/prettify.js"></script>
+    <script type="text/javascript">
+        var pre_elements = document.getElementsByTagName("pre");
+        for (var i = 0; i < pre_elements.length; i++){
+            pre_elements[i].className = "prettyprint";
+        }
+        prettyPrint();
+    </script>
+
+</body>
+</html>

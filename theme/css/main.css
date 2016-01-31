@@ -153,6 +153,9 @@ h6 {
     margin: 2.33em 0;
 }
 
+strong {
+    font-weight: 400 !important;
+}
 /**
  * Address styling not present in IE 7/8/9, Safari 5, and Chrome.
  */
@@ -165,8 +168,7 @@ abbr[title] {
  * Address style set to `bolder` in Firefox 3+, Safari 4/5, and Chrome.
  */
 
-b,
-strong {
+b{
     font-weight: 500;
 }
 
@@ -830,17 +832,9 @@ header {
     overflow: hidden;
 }
 
-header .curly{
-    font-size: 120px;
-    color: #505050;
-}
-
-header .curly.first{
+.readmore {
+    font-weight: 300;
     float: left;
-}
-
-header .curly.last{
-    float: right;
 }
 
 header .content{
@@ -854,7 +848,7 @@ header .title {
     display: block;
     margin: 25px auto 0 auto;
     text-align: center;
-    font-size: 42px;
+    font-size: 28px;
     color: #C21A14;
     text-decoration: none;
 }
@@ -864,30 +858,26 @@ nav {
     height: 40px;
     overflow: hidden;
     display: inline-block;
-    max-width: 320px;
+    max-width: 450px;
     width: 100%;
     font-weight: 300;
     font-family: "Helvetica Neue", "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
 nav a{
-    font-size: 26px;
+    font-size: 18px;
     text-decoration: none;
     color: #7E7E7E;
-    margin-left: 14%;
+    margin-left: 6%;
 }
 
-nav a.first{
-    margin-left: 0 !important;
-}
-
-nav a:hover{
+footer a:hover, nav a:hover{
     color: #000;
 }
 
 
 main{
-    background: #f1f1f1;
+    background: #ECEFF1;
     overflow: hidden;
     padding-bottom: 40px
 }
@@ -908,7 +898,7 @@ article {
 }
 
 .title{
-    font-size: 42px;
+    font-size: 32px;
     letter-spacing: -1px;
     margin: 0 0 20px 0;
     font-weight: 300;
@@ -969,13 +959,48 @@ article.post img.full-width{
     margin-top: 15px;
 }
 
+article.post ul:last-child{
+    margin-top: -10px;
+}
+
+article.post ul li, article.post ul li p{
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+article.post h3{
+    color: #EB687A;
+    font-weight: 400;
+}
+
 footer {
     overflow: hidden;
     padding: 10px 20px;
-    background: #CECECE;
-    color: #2c2c2c;
+    font-size: 26px;
+    background: #e4e4e4;
+    color: #303030;
 }
 
+footer li {
+    list-style: none;
+}
+
+footer strong {
+    color: #a2a2a2;
+    font-weight: 300;
+    display: inline-block;
+    width: 140px;
+    letter-spacing: 1px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+footer a {
+    color: #6c6c6c;
+    text-decoration: none;
+    font-weight: 300;
+}
 
 footer p{
     max-width: 460px;
@@ -1043,6 +1068,10 @@ footer img{
     border-radius: 100px;
     border: 3px solid #fff;
     margin: 20px auto 0 auto;
+}
+
+body.me h3.edu-title{
+    font-weight: 500;
 }
 
 @media (max-width: 720px){

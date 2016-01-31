@@ -1,5 +1,5 @@
-/* Hemisu Light */
-/* Original theme - http://noahfrederick.com/vim-color-scheme-hemisu/ */
+/* Tomorrow Theme */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
 .prettyprint {
   background: white;
   font-family: Menlo, 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', Monaco, Consolas, monospace;
@@ -8,66 +8,65 @@
   border: 1px solid #ccc;
   padding: 10px;
 }
-
 .pln {
-  color: #111111;
+  color: #4d4d4c;
 }
 
 @media screen {
   .str {
-    color: #739200;
+    color: #718c00;
   }
 
   .kwd {
-    color: #739200;
+    color: #8959a8;
   }
 
   .com {
-    color: #999999;
+    color: #8e908c;
   }
 
   .typ {
-    color: #ff0055;
+    color: #4271ae;
   }
 
   .lit {
-    color: #538192;
+    color: #f5871f;
   }
 
   .pun {
-    color: #111111;
+    color: #4d4d4c;
   }
 
   .opn {
-    color: #111111;
+    color: #4d4d4c;
   }
 
   .clo {
-    color: #111111;
+    color: #4d4d4c;
   }
 
   .tag {
-    color: #111111;
+    color: #c82829;
   }
 
   .atn {
-    color: #739200;
+    color: #f5871f;
   }
 
   .atv {
-    color: #ff0055;
+    color: #3e999f;
   }
 
   .dec {
-    color: #111111;
+    color: #f5871f;
   }
 
   .var {
-    color: #111111;
+    color: #c82829;
   }
 
   .fun {
-    color: #538192;
+    color: #4271ae;
   }
 }
 @media print, projection {
@@ -138,12 +137,4 @@ li.L5,
 li.L7,
 li.L9 {
   /* */
-}
-
-td.linenos {
-  display: none;
-}
-
-table.highlighttable{
-  width: 100%;
 }
