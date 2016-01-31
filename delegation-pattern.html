@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Delegation pattern</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/theme/images/fırat_ugur_gursoy.png">
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Slab' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/theme/css/main.css" />
+<link rel="stylesheet" href="/theme/css/prettify.css" />
+</head>
+
+<body class="body ">
+<header>
+    <div class="content">
+        <a href="/" class="title"> Erdem Özkol </a>
+        <nav>
+            <a href="/">blog</a>
+            <a href="/me">me</a>
+            <a href="https://github.com/erdemozkol">github</a>
+            <a href="mailto:erdemozkol@gmail.com">contact</a>
+        </nav>
+    </div>
+</header>
+<main>
+    <div class="content">
+    <article class="post">
+        <div class="post-info">
+            <span class="date">23 January 2016</span>
+            <h2 class="title">Delegation pattern</h2>
+        </div>
+        <p>Delegation pattern is an object-oriented technique where certain operations on one object are automatically applied to another, usually contained, object.</p>
+<p><strong>Wikipedia:</strong>
+<em>In software engineering, the delegation pattern is a design pattern in object-oriented programming where an object, instead of performing one of its stated tasks, delegates that task to an associated helper object.</em></p>
+<h3>Example:</h3>
+<p>Just think we are making a animation with different characters, and each character has different walking styles. So we have two class 
+one is animation and other is character. To achieve this we create a character instace and we pass character instace to animation class. In the animation everything about character will be manage by character instace. Let's see example code bellow.</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="n">Animation:</span>
+    <span class="n">def</span> <span class="n">__init__</span>(<span class="k">self</span>, <span class="n">character</span>, *<span class="n">args</span>, **<span class="n">kwargs</span>):
+        <span class="c-Singleline"># here we set character property of instance </span>
+        <span class="k">self</span>.<span class="n">character</span> = <span class="n">character</span>
+
+    <span class="n">def</span> <span class="n">play</span>(<span class="k">self</span>):
+        <span class="k">self</span>.<span class="n">character</span>.<span class="n">walk</span>()
+
+
+<span class="k">class</span> <span class="n">Character:</span>
+
+    <span class="n">def</span> <span class="n">__init__</span>(<span class="k">self</span>, <span class="nb">name</span>, *<span class="n">args</span>, **<span class="n">kwargs</span>):
+        <span class="k">self</span>.<span class="nb">name</span> = <span class="nb">name</span>
+
+    <span class="n">def</span> <span class="n">walk</span>(<span class="k">self</span>):
+        <span class="nb">print</span> <span class="s">&quot;%s walking on the screen.&quot;</span> % <span class="k">self</span>.<span class="nb">name</span>
+
+
+<span class="n">mike</span> = <span class="n">Character</span>(<span class="nb">name</span>=<span class="s">&quot;Mike&quot;</span>)
+<span class="n">animation</span> = <span class="n">Animation</span>(<span class="n">character</span>=<span class="n">mike</span>)
+<span class="n">animation</span>.<span class="n">play</span>()
+
+&gt;&gt;&gt; <span class="s">&quot;Mike walking on the screen.&quot;</span>
+
+<span class="n">john</span> = <span class="n">Character</span>(<span class="nb">name</span>=<span class="s">&quot;John&quot;</span>)
+<span class="n">animation</span> = <span class="n">Animation</span>(<span class="n">character</span>=<span class="n">john</span>)
+<span class="n">animation</span>.<span class="n">play</span>()
+
+&gt;&gt;&gt; <span class="s">&quot;John walking on the screen.&quot;</span>
+</pre></div>
+
+
+<p><sup><strong><em>References:</em></strong><sup></p>
+<ul>
+<li><sup><a href="http://effbot.org/pyfaq/what-is-delegation.htm">http://effbot.org/pyfaq/what-is-delegation.htm</a><sup></li>
+<li><sup><a href="https://en.wikipedia.org/wiki/Delegation_pattern">https://en.wikipedia.org/wiki/Delegation_pattern</a><sup></li>
+</ul>
+    </article>
+    </div>
+</main>
+<footer>
+
+    <div class="content">
+        <ul>
+            <li><strong>email</strong> <a href="mailto:erdemozkol@gmail.com">erdemozkol@gmail.com</a></li>
+            <li><strong>github</strong> <a href="http://github.com/erdemozkol">github.com/erdemozkol</a></li>
+            <li><strong>twitter</strong> <a href="http://twitter.com/erdemozkol">twitter.com/erdemozkol</a></li>
+            <li><strong>linkedin</strong> <a href="https://www.linkedin.com/in/erdemozkol/">linkedin.com/erdemozkol</a></li>
+        </ul>
+    </div>
+
+</footer>
+    <script type="text/javascript" src="/theme/js/prettify.js"></script>
+    <script type="text/javascript">
+        var pre_elements = document.getElementsByTagName("pre");
+        for (var i = 0; i < pre_elements.length; i++){
+            pre_elements[i].className = "prettyprint";
+        }
+        prettyPrint();
+    </script>
+
+</body>
+</html>
