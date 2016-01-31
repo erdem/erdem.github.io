@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Singleton Pattern</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/theme/images/fırat_ugur_gursoy.png">
+    <link href='http://fonts.googleapis.com/css?family=Josefin+Slab' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/theme/css/main.css" />
+<link rel="stylesheet" href="/theme/css/prettify.css" />
+</head>
+
+<body class="body ">
+<header>
+    <div class="content">
+        <a href="/" class="title"> Erdem Özkol </a>
+        <nav>
+            <a href="/">blog</a>
+            <a href="/me">me</a>
+            <a href="https://github.com/erdemozkol">github</a>
+            <a href="mailto:erdemozkol@gmail.com">contact</a>
+        </nav>
+    </div>
+</header>
+<main>
+    <div class="content">
+    <article class="post">
+        <div class="post-info">
+            <span class="date">18 January 2016</span>
+            <h2 class="title">Singleton Pattern</h2>
+        </div>
+        <p>Sometimes, you find that you only want one instance of a class to be created. Ever. This way of programming is often referred to as the singleton pattern.
+For example, when you want a shared resource like system settings or log manager, you want a single object to handle requests from 
+all the various parts of your application.</p>
+<p><strong>Wikipedia:</strong>
+<em>In software engineering, the singleton pattern is a design pattern that restricts the instantiation of a class to one object. This is useful when exactly one object is needed to coordinate actions across the system.</em></p>
+<h3>Example:</h3>
+<p>Let's assume we load our application configuration from Settings class. This class reads configuration from file. So when we create settings instance we should read configuration once and set variables once, return the instance. If we call settings instance again it should return variables without reading the configuration file.</p>
+<p><strong style="font-size:16px;color:#6C6C6C">settings.py</strong></p>
+<div class="highlight"><pre>DOMAIN = &quot;http://www.erdemozkol.com&quot;
+AUTHOR_NAME = &quot;Erdem Ozkol&quot;
+DATE_FORMAT = &quot;%A %d. %B %Y&quot;
+</pre></div>
+
+
+<p><strong style="font-size:16px;color:#6C6C6C">singleton.py</strong></p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">settings</span>
+
+
+<span class="k">class</span> <span class="nc">Singleton</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">klass</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">klass</span> <span class="o">=</span> <span class="n">klass</span>   <span class="c"># class which is being decorated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># instance of that class</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># new instance is created and stored for future use</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">klass</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">print</span> <span class="s">&quot;New instace created!&quot;</span>
+
+        <span class="k">print</span> <span class="s">&quot;Returning stored instance&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span>
+
+
+<span class="nd">@Singleton</span>
+<span class="k">class</span> <span class="nc">Settings</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
+            <span class="c"># get all variable in settings.py and update the class attributes</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">attr</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
+
+
+
+<span class="n">s1</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;New instace created!&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Returning stored instance&quot;</span>
+
+<span class="n">s2</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Returning stored instance&quot;</span>
+
+<span class="n">s3</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Returning stored instance&quot;</span>
+</pre></div>
+
+
+<p>Bu implemention da ki class'lar yaptığı görevlere bir bakalım. Unit classından türetilen objeler observer class instance na  register olduktan sonra objserver class bu unit'lere event gönderiyor. Yani tüm unit class'larini observer üzerinden dağıtık bir şekilde yönetebiliyoruz.</p>
+<p><sup><strong><em>References:</em></strong><sup></p>
+<ul>
+<li><sup><a href="https://en.wikipedia.org/wiki/Singleton_pattern">https://en.wikipedia.org/wiki/Singleton_pattern</a><sup></li>
+<li><sup><a href="https://anismiles.wordpress.com/2011/05/">https://anismiles.wordpress.com/2011/05/</a><sup></li>
+<li><sup><a href="http://elbenshira.com/blog/singleton-pattern-in-python/">http://elbenshira.com/blog/singleton-pattern-in-python/</a><sup></li>
+</ul>
+    </article>
+    </div>
+</main>
+<footer>
+
+    <div class="content">
+        <ul>
+            <li><strong>email</strong> <a href="mailto:erdemozkol@gmail.com">erdemozkol@gmail.com</a></li>
+            <li><strong>github</strong> <a href="http://github.com/erdemozkol">github.com/erdemozkol</a></li>
+            <li><strong>twitter</strong> <a href="http://twitter.com/erdemozkol">twitter.com/erdemozkol</a></li>
+            <li><strong>linkedin</strong> <a href="https://www.linkedin.com/in/erdemozkol/">linkedin.com/erdemozkol</a></li>
+        </ul>
+    </div>
+
+</footer>
+    <script type="text/javascript" src="/theme/js/prettify.js"></script>
+    <script type="text/javascript">
+        var pre_elements = document.getElementsByTagName("pre");
+        for (var i = 0; i < pre_elements.length; i++){
+            pre_elements[i].className = "prettyprint";
+        }
+        prettyPrint();
+    </script>
+
+</body>
+</html>
