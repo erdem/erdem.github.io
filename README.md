@@ -1,3 +1,6 @@
-# erdem.github.io
+# erdemozkol.com
 
-My personal blog 
+My personal blog site
+
+[erdemozkol.com](erdemozkol.com)
+
