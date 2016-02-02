@@ -2,5 +2,5 @@
 
 My personal blog site
 
-[http://erdemozkol.com](erdemozkol.com)
+[erdemozkol.com](http://erdemozkol.com)
 
