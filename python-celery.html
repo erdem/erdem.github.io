@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Python Celery</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/theme/images/fırat_ugur_gursoy.png">
     <link href='http://fonts.googleapis.com/css?family=Josefin+Slab' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/theme/css/main.css" />
 <link rel="stylesheet" href="/theme/css/prettify.css" />
 </head>
 
-<body>
+<body class="body ">
 <header>
     <div class="content">
-        <span class="curly first">{</span>
-        <span class="curly last">}</span>
         <a href="/" class="title"> Erdem Özkol </a>
         <nav>
-            <a class="first" href="/">Blog</a>
-            <a href="https://github.com/erdemozkol/">Github</a>
-            <a href="https://twitter.com/erdemozkol/">Twitter</a>
+            <a href="/">blog</a>
+            <a href="/me">me</a>
+            <a href="https://github.com/erdemozkol">github</a>
+            <a href="mailto:erdemozkol@gmail.com">contact</a>
         </nav>
     </div>
 </header>
@@ -27,10 +27,10 @@
     <div class="content">
     <article class="post">
         <div class="post-info">
-            <span class="date">10 January 2015</span>
+            <span class="date">01 February 2016</span>
             <h2 class="title">Python Celery</h2>
         </div>
-        <p>Sunucu(backend) tarafında geliştirme yaparken bazı durumlarda asenkron çalışan process'lere ihtiyaç duyarız. Bu asenkron 
+        <p>Sunucu tarafında geliştirme yaparken bazı durumlarda asenkron çalışan process'lere ihtiyaç duyarız. Bu asenkron 
 process'leri istemciye anlık cevap verilmesi gerekmeyen veya peryodik olarak çalışması gereken işlemleri yapmak için kullanırız.</p>
 <p>Örneğin kullanıcıların sisteme yüklediği resimleri çeşitli boyutlarda işleyip, kayıt altına almamız gerektiğini varsayalım. 
 Böylesine kullanıcıya anlık cevap gerektirmeyen bir işlemi, senkron bir şekilde geliştirirsek hem işlem uzun 
@@ -47,9 +47,9 @@ bir sıraya göre yapan kuyruk sistemi. (bkz: <a href="http://en.wikipedia.org/w
 <li><strong>Worker</strong> : Broker'dan gelen mesaja göre ilgili task'ları çalıştıran ve dağıtık çalışabilen sistemler. </li>
 <li><strong>Result Store</strong> : Task çalışıp process bittikten sonra task'ın sonucunu kayıt altına aldığımız veritabanı sistemleri. </li>
 </ul>
-<p><img alt="" class="full-width" src="/theme/images/celery_schema.png" /></p>
+<p><img alt="" class="full-width" src="images/celery_schema.png" /></p>
 <h2>Kurulum</h2>
-<p>ilk olarak <strong>Broker</strong>'dan başlayalım. Broker olarak AMQP protokolü üzerinden çalışan <a href="rabbitmq.com{: target=_blank}">rabbitMQ</a> 
+<p>ilk olarak <strong>Broker</strong>'dan başlayalım. Broker olarak AMQP protokolü üzerinden çalışan <a href="http://rabbitmq.com" target="_blank">rabbitMQ</a> 
 mesaj kuyruğu(message queue) sistemini kuruyoruz. </p>
 <div class="highlight"><pre>apt-get install rabbitmq-server
 </pre></div>
@@ -104,7 +104,7 @@ CELERY_IMPORTS = (&#39;tasks&#39;, )
 </pre></div>
 
 
-<p><img alt="" class="full-width" src="/theme/images/celery_run.jpg" /></p>
+<p><img alt="" class="full-width" src="images/celery_run.jpg" /></p>
 <p>Eğer celery düzgün çalışıyorsa, karşınıza yukarıdaki gibi bir ekran gelicektir. Bu ekranda belirttiğim yerleri gelicek olursak.</p>
 <p><a href="http://celery.readthedocs.org/en/latest/userguide/workers.html#concurrency" target="_blank">Concurrency</a> (eşzamanlı) 
 bilgisayar bilimlerinde çok kullanılan bir terim. Kısaca tanımlamak gerekirse bir işlemin farklı thread'lerde eş zamanlı 
@@ -170,7 +170,7 @@ register olan task'ların listesini görebilirsiniz.    </p>
 "thumbnail_generater(image_path, image_name)" şeklinde çağırmadık. Task fonksiyonumuzun başına "@task" 
 decorator'u eklediğimiz için fonksiyona "delay" isminde yeni bir attribute/komut eklendi. Delay üzerinden celery broker'a 
 işlemin background task olarak çalışmasını istiyor. Eğer normal olarak çağırırsanız işlem normal python process olarak çalışır.</p>
-<p>Umarım konuyu iyi anlatabilmişimdir. İncelemek isterseniz yazdığım örnek uygulamanın koduna <a href="https://github.com/erdemozkol/celery_example/" target="_blank">github</a>
+<p>Umarım konuyu iyi anlatabilmişimdir. İncelemek isterseniz yazdığım örnek uygulamanın koduna <a href="http://www.github.com/erdemozkol/" target="_blank">github</a>
 sayfam üzerinden ulaşabilirsiniz. Bir sonraki blog yazımda görüşmek üzere.</p>
     </article>
     </div>
@@ -178,11 +178,12 @@ sayfam üzerinden ulaşabilirsiniz. Bir sonraki blog yazımda görüşmek üzere
 <footer>
 
     <div class="content">
-        <p>Merhaba ben Erdem, genelde web ağırlıklı olmak üzere yazılım geliştirme ile uğraşıyorum.
-             Benimle <a href="mailto:erdemozkol@gmail.com" class="email">email</a> ile iletişime geçebilir,
-            <a href="https://github.com/erdemozkol/" target="_blank" class="github">github</a> üzerinden projelerimi inceleyebilir, ya da
-            <a href="https://twitter.com/erdemozkol/" target="_blank" class="twitter">twitter</a> üzerinden takip edebilirsiniz.</p>
-        <img src="/theme/images/profile_picture.jpg" />
+        <ul>
+            <li><strong>email</strong> <a href="mailto:erdemozkol@gmail.com">erdemozkol@gmail.com</a></li>
+            <li><strong>github</strong> <a href="http://github.com/erdemozkol">github.com/erdemozkol</a></li>
+            <li><strong>twitter</strong> <a href="http://twitter.com/erdemozkol">twitter.com/erdemozkol</a></li>
+            <li><strong>linkedin</strong> <a href="https://www.linkedin.com/in/erdemozkol/">linkedin.com/erdemozkol</a></li>
+        </ul>
     </div>
 
 </footer>
