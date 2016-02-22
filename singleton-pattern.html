@@ -36,28 +36,28 @@
 <h3>Example:</h3>
 <p>Let's assume we load our application configuration from Settings class. This class reads configuration from file. So when we create settings instance we should read configuration once and set variables once, return the instance. If we call settings instance again it should return variables without reading the configuration file.</p>
 <p><strong style="font-size:16px;color:#6C6C6C">settings.py</strong></p>
-<div class="highlight"><pre>DOMAIN = &quot;http://www.erdemozkol.com&quot;
+<div class="highlight"><pre><span></span>DOMAIN = &quot;http://www.erdemozkol.com&quot;
 AUTHOR_NAME = &quot;Erdem Ozkol&quot;
 DATE_FORMAT = &quot;%A %d. %B %Y&quot;
 </pre></div>
 
 
 <p><strong style="font-size:16px;color:#6C6C6C">singleton.py</strong></p>
-<div class="highlight"><pre><span class="kn">import</span> <span class="nn">settings</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">settings</span>
 
 
 <span class="k">class</span> <span class="nc">Singleton</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">klass</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">klass</span> <span class="o">=</span> <span class="n">klass</span>   <span class="c"># class which is being decorated</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c"># instance of that class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">klass</span> <span class="o">=</span> <span class="n">klass</span>   <span class="c1"># class which is being decorated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="bp">None</span>  <span class="c1"># instance of that class</span>
 
     <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c"># new instance is created and stored for future use</span>
+            <span class="c1"># new instance is created and stored for future use</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">klass</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="k">print</span> <span class="s">&quot;New instace created!&quot;</span>
+            <span class="k">print</span> <span class="s2">&quot;New instace created!&quot;</span>
 
-        <span class="k">print</span> <span class="s">&quot;Returning stored instance&quot;</span>
+        <span class="k">print</span> <span class="s2">&quot;Returning stored instance&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span>
 
 
@@ -65,20 +65,20 @@ DATE_FORMAT = &quot;%A %d. %B %Y&quot;
 <span class="k">class</span> <span class="nc">Settings</span><span class="p">:</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">module</span><span class="p">):</span>
-            <span class="c"># get all variable in settings.py and update the class attributes</span>
+            <span class="c1"># get all variable in settings.py and update the class attributes</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">attr</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span>
 
 
 
 <span class="n">s1</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;New instace created!&quot;</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Returning stored instance&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;New instace created!&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;Returning stored instance&quot;</span>
 
 <span class="n">s2</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Returning stored instance&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;Returning stored instance&quot;</span>
 
 <span class="n">s3</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">(</span><span class="n">module</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="s">&quot;Returning stored instance&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;Returning stored instance&quot;</span>
 </pre></div>
 
 
