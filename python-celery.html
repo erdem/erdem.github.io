@@ -46,7 +46,7 @@
 <p><strong>Worker</strong> : It is running the task according to the message from the broker. That system can be distributed.</p>
 </li>
 <li>
-<p><strong>Result Store</strong> : When the task process finished, task result stored a DB system, we call these DB systems "result store".</p>
+<p><strong>Result Store</strong> : When the task process finished, task result stored a DB system.</p>
 </li>
 </ul>
 <p><img alt="" class="full-width" src="images/celery_schema.png" /></p>
@@ -102,7 +102,7 @@ service rabbitmq-server restart
 <p>If celery works without any errors, you will see a screen like above. Let's look close red lines on this screenshot.</p>
 <p><a href="http://celery.readthedocs.org/en/latest/userguide/workers.html#concurrency" target="_blank">Concurrency</a>
 is a term in computer science. In short, you use concurrency if you need to define a process running simultaneously in different threads. </p>
-<p>The number of concurrency in celery is the number that can be executed concurrently. you can increase or decrease this number. </p>
+<p>The number of concurrency in celery is the number that can be executed concurrently. You can increase or decrease this number. </p>
 <p>You can see task section because of we pass "--loglevel=INFO" parameter. In this section, you can see the list of the registered celery task.</p>
 <p>Let's implement a task for celery.</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
@@ -153,7 +153,7 @@ is a term in computer science. In short, you use concurrency if you need to defi
 </pre></div>
 
 
-<p>We don't call thumbnail generater in classic way, instead we call like </p>
+<p>We don't call celery task in classic way, instead we call like </p>
 <div class="highlight"><pre><span></span>thumbnail_generater.delay()
 </pre></div>
 
