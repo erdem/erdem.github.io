@@ -30,23 +30,23 @@
             <span class="date">01 February 2016</span>
             <h2 class="title">Python Celery</h2>
         </div>
-        <p>On backend side we sometimes need asynchronous tasks to be completed by server. Those tasks are generally don't return response at that moment. They are also used for periodic jobs.</p>
-<p><strong>Example</strong>: We need to save some different size photos that user has uploaded. We can just receive original photo and process later. We don't need to do it sychronously, and it will take time if we process it schronously. Server performance, especially response time, will also suffer from this operation.</p>
-<p>So we use "Background Tasks". The are disributable, and scalable. <a href="http://www.celeryproject.org/" target="_blank">python-celery</a> is one of the packages provides background tasks.</p>
+        <p>On backend side, we sometimes need asynchronous tasks to be completed by the server. Those tasks are generally don't return a response at that moment. They are also used for periodic jobs.</p>
+<p><strong>Example</strong>: We need to save some different size photos that user has uploaded. We can just receive original photo and process later. We don't need to do it synchronously, and it will take time if we process it synchronously. Server performance, especially response time, will also suffer from this operation.</p>
+<p>So we use "Background Tasks". They are distributable and scalable. <a href="http://www.celeryproject.org/" target="_blank">python-celery</a> is one of the packages provides background tasks.</p>
 <h2>How it works?</h2>
-<p>Background tasks has 4 type of section.</p>
+<p>Background tasks have 4 type of section.</p>
 <ul>
 <li>
-<p><strong>Publisher</strong> : It sends message to broker, to start tasks.</p>
+<p><strong>Publisher</strong>: It sends a message to the broker, to start tasks.</p>
 </li>
 <li>
-<p><strong>Broker</strong> : It receives process to worker from the client. It is also doing this job in a specific order queuing system. (<a href="http://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol" target="_blank">AMQP</a>)</p>
+<p><strong>Broker</strong>: It receives process to worker from the client. It is also doing this job in a specific order queuing system. (<a href="http://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol" target="_blank">AMQP</a>)</p>
 </li>
 <li>
-<p><strong>Worker</strong> : It is running the task according to the message from the broker. That system can be distributed.</p>
+<p><strong>Worker</strong>: It is running the task according to the message from the broker. That system can be distributed.</p>
 </li>
 <li>
-<p><strong>Result Store</strong> : When the task process finished, task result stored a DB system.</p>
+<p><strong>Result Store</strong>: When the task process finished, task result stored a DB system.</p>
 </li>
 </ul>
 <p><img alt="" class="full-width" src="images/celery_schema.png" /></p>
@@ -56,7 +56,7 @@
 </pre></div>
 
 
-<p>After installing the rabbitMQ, we can create user and virtual host for using with python-celery. Just following these commands. </p>
+<p>After installing the rabbitMQ, we can create a user and virtual host for using with python-celery. Just following these commands. </p>
 <div class="highlight"><pre><span></span>rabbitmqctl add_user celeryuser celery
 rabbitmqctl add_vhost celeryvhost
 rabbitmqctl set_permissions -p celeryvhost celeryuser &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;
@@ -71,7 +71,7 @@ service rabbitmq-server restart
 
 <p>We need a DB system for <strong>result store</strong>. Result store comes disabled as default on celery. If you need a result store, celery config file must be changed. As I mentioned above, it's a result store what task did run or if didn't it stored  error record information such as a section that we use to take <a href="http://en.wikipedia.org/wiki/Application_performance_management" target="_blank">monitoring</a>.    </p>
 <p>We could use non-relation DB system in here. Because this kind of system-generated log data hasn't any relation. We need to writing speed is high.    </p>
-<p>I am usually using <a href="http://redis.io/" target="_blank">redis</a> for result store. If you are going to use redis with Celery, you have to instal python redis client.</p>
+<p>I am usually using <a href="http://redis.io/" target="_blank">redis</a> for result store. If you are going to use redis with Celery, you have to install python Redis client.</p>
 <div class="highlight"><pre><span></span> apt-get install redis-server
 
  pip install redis
@@ -79,7 +79,7 @@ service rabbitmq-server restart
 
 
 <h2>Example</h2>
-<p>As I mentioned above we implement a image resize system. We will resize image that come from user and we will to categorize in a folder.</p>
+<p>As I mentioned above we implement an image resize system. We will resize an image that come from the user and we will categorize in a folder.</p>
 <p>First we implement celery configuration.</p>
 <div class="highlight"><pre><span></span><span class="c1"># Adding rabbitMQ info for broker settings.</span>
 <span class="c1"># amqp://&lt;username&gt;:&lt;password&gt;@localhost:5672/&lt;virtual_host&gt;</span>
@@ -93,7 +93,7 @@ service rabbitmq-server restart
 </pre></div>
 
 
-<p>Let's check python celery is it working with the following command. </p>
+<p>Let's check python-celery is it working with the following command. </p>
 <div class="highlight"><pre><span></span>celery worker --loglevel=INFO
 </pre></div>
 
@@ -111,7 +111,7 @@ is a term in computer science. In short, you use concurrency if you need to defi
 <span class="kn">from</span> <span class="nn">celery.task</span> <span class="kn">import</span> <span class="n">task</span>
 <span class="kn">from</span> <span class="nn">constants</span> <span class="kn">import</span> <span class="n">THUMBNAIL_SIZES</span><span class="p">,</span> <span class="n">THUMBNAILS_DIRECTORY</span>
 
-<span class="c1"># Every celery task function must be use celery task decorator.</span>
+<span class="c1"># Every celery task function must be used celery task decorator.</span>
 <span class="c1"># &quot;@task&quot; decorator registered function to celery</span>
 
 <span class="nd">@task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;thumbnail_generater&quot;</span><span class="p">)</span>
@@ -139,8 +139,8 @@ is a term in computer science. In short, you use concurrency if you need to defi
 </pre></div>
 
 
-<p>This celery task process the images.</p>
-<p>Lastly we will implement publisher method. Celery must be running in order to run publisher.</p>
+<p>This celery task processes the images.</p>
+<p>Lastly, we will implement publisher method. Celery must be running in order to run publisher.</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">thumbnail_generater</span>
 <span class="kn">from</span> <span class="nn">constants</span> <span class="kn">import</span> <span class="n">IMAGE_DIRECTORY</span>
@@ -153,18 +153,18 @@ is a term in computer science. In short, you use concurrency if you need to defi
 </pre></div>
 
 
-<p>We don't call celery task in classic way, instead we call like </p>
+<p>We don't call celery task in classic way, instead, we call like </p>
 <div class="highlight"><pre><span></span>thumbnail_generater.delay()
 </pre></div>
 
 
-<p>We achive this with "@task" decorator of celery. We can pass same parameters celery task like </p>
+<p>We achieve this with "@task" decorator of celery. We can pass same parameters celery task like </p>
 <div class="highlight"><pre><span></span>thumbnail_generater.delay(image_path, image_name)
 </pre></div>
 
 
 <p>If you call it in classic way like "thumbnail_generater()" it will run as normal python process. </p>
-<p>I hope, I have exlplained in correct and easy way. You find the example project on my <a href="https://github.com/erdem/celery-example" target="_blank">github</a>.</p>
+<p>I hope, I have explained incorrect and easy way. You find the example project on my <a href="https://github.com/erdem/celery-example" target="_blank">github</a>.</p>
     </article>
     </div>
 </main>
