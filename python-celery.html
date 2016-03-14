@@ -70,7 +70,7 @@ service rabbitmq-server restart
 
 
 <p>We need a DB system for <strong>result store</strong>. Result store comes disabled as default on celery. If you need a result store, celery config file must be changed. As I mentioned above, it's a result store what task did run or if didn't it stored  error record information such as a section that we use to take <a href="http://en.wikipedia.org/wiki/Application_performance_management" target="_blank">monitoring</a>.    </p>
-<p>We could use non-relation DB system in here. Because this kind of system-generated log data hasn't any relation. We need to writing speed is high.    </p>
+<p>We could use non-relation DB system in here. Because this kind of system-generated log data doesn't have any relation. We need to writing speed is high.    </p>
 <p>I am usually using <a href="http://redis.io/" target="_blank">redis</a> for result store. If you are going to use redis with Celery, you have to install python Redis client.</p>
 <div class="highlight"><pre><span></span> apt-get install redis-server
 
