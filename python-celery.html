@@ -30,8 +30,9 @@
             <span class="date">01 February 2016</span>
             <h2 class="title">Python Celery</h2>
         </div>
-        <p>On backend side, we sometimes need asynchronous tasks to be completed by the server. Those tasks are generally don't return a response at that moment. They are also used for periodic jobs.</p>
-<p><strong>Example</strong>: We need to save some different size photos that user has uploaded. We can just receive original photo and process later. We don't need to do it synchronously, and it will take time if we process it synchronously. Server performance, especially response time, will also suffer from this operation.</p>
+        <p>On backend side, we sometimes need asynchronous tasks to be completed by the server. Those tasks generally don't return a response at that moment. They are also used for periodic jobs.</p>
+<p><strong>Example</strong>: We need to save some different sizes photos that user has uploaded. We can just receive original photo and process later. We don't need to do it synchronously, and it will take time if we process it synchronously. Server performance, especially response time, will also suffer from this operation. Also you can scale pretty easy by adding more servers to do the "photo processing", resizing etc. </p>
+<p>Since you decoupled your photo processing from your web application, you have more flexibility. Ex. you can add more servers under high load and scale up, and when the storm is over you can also scale down.</p>
 <p>So we use "Background Tasks". They are distributable and scalable. <a href="http://www.celeryproject.org/" target="_blank">python-celery</a> is one of the packages provides background tasks.</p>
 <h2>How it works?</h2>
 <p>Background tasks have 4 type of section.</p>
@@ -51,12 +52,12 @@
 </ul>
 <p><img alt="" class="full-width" src="images/celery_schema.png" /></p>
 <h2>Install</h2>
-<p>First we start with the <strong>broker</strong>. I choose <a href="http://rabbitmq.com" target="_blank">rabbitMQ</a> for the broker, it is running on AMQP protocol. Let's install rabbitMQ.</p>
+<p>First we start with the <strong>broker</strong>. I choose <a href="http://rabbitmq.com" target="_blank">rabbitMQ</a> as the broker, because it is very strong as a broker and easy to use. Let's install rabbitMQ.</p>
 <div class="highlight"><pre><span></span>apt-get install rabbitmq-server
 </pre></div>
 
 
-<p>After installing the rabbitMQ, we can create a user and virtual host for using with python-celery. Just following these commands. </p>
+<p>After installing the rabbitMQ, we have to create a user and virtual host for using with python-celery. Just following these commands. </p>
 <div class="highlight"><pre><span></span>rabbitmqctl add_user celeryuser celery
 rabbitmqctl add_vhost celeryvhost
 rabbitmqctl set_permissions -p celeryvhost celeryuser &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;
@@ -69,9 +70,9 @@ service rabbitmq-server restart
 </pre></div>
 
 
-<p>We need a DB system for <strong>result store</strong>. Result store comes disabled as default on celery. If you need a result store, celery config file must be changed. As I mentioned above, it's a result store what task did run or if didn't it stored  error record information such as a section that we use to take <a href="http://en.wikipedia.org/wiki/Application_performance_management" target="_blank">monitoring</a>.    </p>
-<p>We could use non-relation DB system in here. Because this kind of system-generated log data doesn't have any relation. We need to writing speed is high.    </p>
-<p>I am usually using <a href="http://redis.io/" target="_blank">redis</a> for result store. If you are going to use redis with Celery, you have to install python Redis client.</p>
+<p>We need a DB system for <strong>result store</strong>. Result store comes disabled as default on celery. If you need a result store, you need to enable it on the celery config file. As you can guess, a result store is responsible to save results of tasks, which task run, when they've run, or which tasks failed.    </p>
+<p>We could use non-relation DB system in here. Because this kind of system-generated log data doesn't have any relation. We need high write throughput.    </p>
+<p>I am usually using <a href="http://redis.io/" target="_blank">redis</a> as a result store. If you are going to use redis with Celery, you have to install python Redis client.</p>
 <div class="highlight"><pre><span></span> apt-get install redis-server
 
  pip install redis
@@ -93,13 +94,13 @@ service rabbitmq-server restart
 </pre></div>
 
 
-<p>Let's check python-celery is it working with the following command. </p>
+<p>Let's check if python-celery is working, with the following command. </p>
 <div class="highlight"><pre><span></span>celery worker --loglevel=INFO
 </pre></div>
 
 
 <p><img alt="" class="full-width" src="images/celery_run.jpg" /></p>
-<p>If celery works without any errors, you will see a screen like above. Let's look close red lines on this screenshot.</p>
+<p>If celery works without any errors, you will see a screen like above. Let's look closely to red lines on this screenshot.</p>
 <p><a href="http://celery.readthedocs.org/en/latest/userguide/workers.html#concurrency" target="_blank">Concurrency</a>
 is a term in computer science. In short, you use concurrency if you need to define a process running simultaneously in different threads. </p>
 <p>The number of concurrency in celery is the number that can be executed concurrently. You can increase or decrease this number. </p>
@@ -111,19 +112,15 @@ is a term in computer science. In short, you use concurrency if you need to defi
 <span class="kn">from</span> <span class="nn">celery.task</span> <span class="kn">import</span> <span class="n">task</span>
 <span class="kn">from</span> <span class="nn">constants</span> <span class="kn">import</span> <span class="n">THUMBNAIL_SIZES</span><span class="p">,</span> <span class="n">THUMBNAILS_DIRECTORY</span>
 
-<span class="c1"># Every celery task function must be used celery task decorator.</span>
+<span class="c1"># Every celery task function must be annotated with a celery task decorator.</span>
 <span class="c1"># &quot;@task&quot; decorator registered function to celery</span>
 
-<span class="nd">@task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;thumbnail_generater&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">thumbnail_generater</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">):</span>
+
+<span class="nd">@task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;thumbnail_generator&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">thumbnail_generator</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">thumbnail_size</span> <span class="ow">in</span> <span class="n">THUMBNAIL_SIZES</span><span class="p">:</span>
         <span class="n">thumbnail_folder_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">x</span><span class="si">%s</span><span class="s2">/&quot;</span> <span class="o">%</span> <span class="n">thumbnail_size</span>
         <span class="n">thumbnail_directory</span> <span class="o">=</span> <span class="n">THUMBNAILS_DIRECTORY</span> <span class="o">+</span> <span class="n">thumbnail_folder_name</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">thumbnail_directory</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-            <span class="k">pass</span>
 
         <span class="n">thumbnail_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;image_name&quot;</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">image_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
@@ -142,29 +139,33 @@ is a term in computer science. In short, you use concurrency if you need to defi
 <p>This celery task processes the images.</p>
 <p>Lastly, we will implement publisher method. Celery must be running in order to run publisher.</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">thumbnail_generater</span>
-<span class="kn">from</span> <span class="nn">constants</span> <span class="kn">import</span> <span class="n">IMAGE_DIRECTORY</span>
+
+<span class="kn">from</span> <span class="nn">tasks</span> <span class="kn">import</span> <span class="n">thumbnail_generator</span>
+<span class="kn">from</span> <span class="nn">constants</span> <span class="kn">import</span> <span class="n">IMAGE_DIRECTORY</span><span class="p">,</span> <span class="n">IMAGE_EXTENSIONS</span>
+
 
 <span class="k">def</span> <span class="nf">generate_thumbnails</span><span class="p">():</span>
-    <span class="n">images</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">IMAGE_DIRECTORY</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">image_name</span> <span class="ow">in</span> <span class="n">images</span><span class="p">:</span>
-        <span class="n">image_path</span> <span class="o">=</span> <span class="n">IMAGE_DIRECTORY</span> <span class="o">+</span> <span class="n">image_name</span>
-        <span class="n">thumbnail_generater</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">image_name</span><span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">IMAGE_DIRECTORY</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">file_name</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">file_extension</span> <span class="ow">in</span> <span class="n">IMAGE_EXTENSIONS</span><span class="p">:</span>
+            <span class="n">image_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">IMAGE_DIRECTORY</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+            <span class="n">thumbnail_generator</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">image_path</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
 </pre></div>
 
 
-<p>We don't call celery task in classic way, instead, we call like </p>
+<p>We don't call celery task in classic way, instead, we call it like:</p>
 <div class="highlight"><pre><span></span>thumbnail_generater.delay()
 </pre></div>
 
 
-<p>We achieve this with "@task" decorator of celery. We can pass same parameters celery task like </p>
+<p>We achieve this with "@task" decorator of celery. We can pass the same parameters to celery task like: </p>
 <div class="highlight"><pre><span></span>thumbnail_generater.delay(image_path, image_name)
 </pre></div>
 
 
 <p>If you call it in classic way like "thumbnail_generater()" it will run as normal python process. </p>
-<p>I hope, I have explained incorrect and easy way. You find the example project on my <a href="https://github.com/erdem/celery-example" target="_blank">github</a>.</p>
+<p>I hope you enjoyed while reading. You find the example project on my <a href="https://github.com/erdem/celery-example" target="_blank">github</a>.</p>
     </article>
     </div>
 </main>
